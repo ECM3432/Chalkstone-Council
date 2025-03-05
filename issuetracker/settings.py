@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'comments.apps.CommentsConfig',
     'analytics.apps.AnalyticsConfig',
     
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -77,7 +78,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'templates',  # Make sure this points to the root 'templates' folder
+            BASE_DIR /  'issuetracker' / 'templates',  # Make sure this points to the root 'templates' folder
         ],
         'APP_DIRS': True,  # Allow Django to search inside app-level 'templates' directories
         'OPTIONS': {
@@ -87,6 +88,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': True,
         },
     },
 ]
@@ -102,8 +104,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',      # Django default
     'allauth.account.auth_backends.AuthenticationBackend',  # Allauth
 ]
-
-
 
 WSGI_APPLICATION = 'issuetracker.wsgi.application'
 

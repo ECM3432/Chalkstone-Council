@@ -60,7 +60,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-             BASE_DIR / 'templates',  # Add this if you want a project-level templates directory
+             BASE_DIR / 'templates',  # Project-level templates directory
             ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -125,7 +125,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # Add this if you have a project-level static folder
+    BASE_DIR / 'static',  # Project-level static folder
 ]
 
 # Default primary key field type

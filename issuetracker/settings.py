@@ -65,11 +65,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'allauth.account.middleware.AccountMiddleware'
+    'allauth.account.middleware.AccountMiddleware',  # This one is needed for allauth
 ]
 
 ROOT_URLCONF = 'issuetracker.urls'
@@ -78,7 +74,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR /  'issuetracker' / 'templates',  # Make sure this points to the root 'templates' folder
+            BASE_DIR / 'templates',  # Ensure this is pointing to the correct folder
         ],
         'APP_DIRS': True,  # Allow Django to search inside app-level 'templates' directories
         'OPTIONS': {
@@ -93,6 +89,7 @@ TEMPLATES = [
     },
 ]
 
+
 LOGIN_REDIRECT_URL = '/'
 
 SOCIAL_AUTH_GOOGLE_CLIENT_ID = os.getenv('SOCIAL_AUTH_GOOGLE_CLIENT_ID')
@@ -101,7 +98,7 @@ SOCIAL_AUTH_GOOGLE_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_SECRET')
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',      # Django default
+    'django.contrib.auth.backends.ModelBackend',            # Django default
     'allauth.account.auth_backends.AuthenticationBackend',  # Allauth
 ]
 

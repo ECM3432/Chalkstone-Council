@@ -26,7 +26,7 @@ urlpatterns = [
     path('analytics/', include('analytics.urls')), # analytics app
     path('users/', include('users.urls')),         # users app (if needed for profile)
     path('admin/', admin.site.urls),               # django admin
-    path('accounts/', include('django.contrib.auth.urls')), # django auth
+    # path('accounts/', include('django.contrib.auth.urls')), # django auth
     path('accounts/', include('allauth.urls')),  # Allauth for social logins like Google OAuth
 ]
 

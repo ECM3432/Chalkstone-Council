@@ -1,6 +1,6 @@
-# core/urls.py
+# analytics/urls.py
 from django.urls import path
-from core import views
+from analytics import views
 from django.conf import settings
 from django.conf.urls.static import static
 

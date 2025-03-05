@@ -1,0 +1,24 @@
+<!-- issues/issue_list.html -->
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>Issue List</h2>
+
+  {% if user.is_staff %}
+    <h3>Filter by Category</h3>
+    <ul>
+      {% for category, category_name in categories %}
+        <li><a href="{% url 'issue_category' category %}">{{ category_name }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <ul>
+    {% for issue in issues %}
+      <li>
+        <a href="{% url 'issue_detail' pk=issue.pk %}">{{ issue.title }}</a> (Status: {{ issue.status }})
+      </li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}

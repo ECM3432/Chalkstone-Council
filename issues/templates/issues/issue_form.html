@@ -1,0 +1,11 @@
+<!-- issues/issue_form.html -->
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>{% if issue %}Edit{% else %}Create{% endif %} Issue</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if issue %}Update{% else %}Create{% endif %} Issue</button>
+  </form>
+{% endblock %}

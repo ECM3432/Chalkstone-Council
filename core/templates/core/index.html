@@ -1,0 +1,32 @@
+{% extends "core/base.html" %}
+
+{% block title %}Welcome to Chalkstone Council{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <h2>Welcome to Chalkstone Council's Issue Tracking Platform</h2>
+        <p>Your one-stop platform for logging, managing, and resolving community issues.</p>
+        <a href="/issues" class="cta-button">Report an Issue</a>
+    </section>
+
+    <div class="info-container">
+        <div class="info about">
+            <h3>About Chalkstone Council</h3>
+            <p>Chalkstone Council is dedicated to fostering a vibrant and safe community for all residents. Our mission is to ensure that local services are responsive and accountable to the needs of our citizens. We actively engage with the public to gather insights and feedback on issues that affect daily life, from road maintenance to community safety.</p>
+            <p>Our team works tirelessly to address concerns ranging from potholes and street lighting to more serious issues like anti-social behavior and environmental hazards. By harnessing the power of technology and data analysis, we aim to improve our service delivery and enhance the quality of life for everyone in our community.</p>
+            <p>We believe that open communication and transparency are key to a thriving local government, and we encourage residents to report any issues they encounter so we can address them promptly and effectively.</p>
+        </div>
+
+        <div class="info how-it-works">
+            <h3>How It Works</h3>
+            <p>Using our platform is simple and intuitive. Here’s how you can help make our community better:</p>
+            <ol>
+                <li><strong>Login or Register:</strong> Create an account or log in to your existing account to report issues. This allows us to keep track of your reports and communicate effectively.</li>
+                <li><strong>Report an Issue:</strong> Click on the "Report an Issue" button to fill out a simple form describing the problem. You can include details such as the location, type of issue, and any additional comments.</li>
+                <li><strong>Track Progress:</strong> Once reported, you can track the status of your issue through your account. You'll receive updates as our team works to address the problem.</li>
+                <li><strong>Close the Issue:</strong> Once the issue has been resolved, you will be notified. You can then confirm the resolution and close the issue, helping us maintain accurate records.</li>
+            </ol>
+            <p>We use advanced data analysis tools to monitor trends in reported issues, allowing us to allocate resources effectively and prioritize matters that require urgent attention. Your contributions help us make informed decisions that enhance our community's well-being.</p>
+        </div>
+    </div>
+{% endblock %}

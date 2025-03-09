@@ -1,0 +1,217 @@
+/* Reset some default styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* Header and Navigation */
+header {
+    background-color: #2d3e50;
+    padding: 20px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .logo h1 {
+    font-size: 24px;
+}
+
+nav .nav-links ul {
+    list-style: none;
+    display: flex;
+}
+
+nav .nav-links ul li {
+    margin-left: 20px;
+}
+
+nav .nav-links ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+nav .nav-links ul li a:hover {
+    color: #1f9f92;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none;
+    cursor: pointer;
+}
+
+.hamburger-menu .bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+}
+
+/* Main Content */
+main {
+    padding: 40px;
+    text-align: center;
+}
+
+.intro h2 {
+    color: #2d3e50;
+    font-size: 28px;
+}
+
+.info ul {
+    list-style: none;
+    padding: 20px;
+}
+
+.info ul li {
+    margin-bottom: 10px;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #2d3e50;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+/* Login Button */
+.login a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1f9f92;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.login a:hover {
+    background-color: #2e9f93;
+}
+/* Main Content */
+main {
+    padding: 40px;
+    text-align: center;
+}
+
+/* Hero Section */
+.hero {
+    background-color: #1f9f92;
+    color: white;
+    padding: 60px 20px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.hero h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* Call-to-Action Button */
+.cta-button {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #2d3e50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    border: 1px solid #fff;
+}
+
+/* Info Section */
+.info-container {
+    display: block; /* Change to block to stack sections */
+    margin: 40px 0;
+}
+
+.info {
+    background-color: white;
+    border: 1px solid #2d3e50;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px auto; /* Center the info sections */
+    width: 90%; /* Adjust width for better responsiveness */
+    max-width: 800px; /* Set a maximum width for larger screens */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.info:hover {
+    transform: scale(1.02); /* Slight scale effect on hover */
+}
+
+.info h3 {
+    color: #2d3e50;
+    margin-bottom: 15px;
+    font-size: 24px; /* Increased font size for better visibility */
+}
+
+.info p {
+    color: #555;
+    font-size: 16px; /* Increased font size for better readability */
+    line-height: 1.6; /* Improved line height for readability */
+}
+
+.info ol {
+    padding-left: 20px; /* Indentation for ordered list */
+    margin-top: 10px;
+}
+/* Responsive Design for Hamburger Menu */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #2d3e50;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links ul {
+        flex-direction: column;
+    }
+
+    .nav-links.active {
+        display: block;
+    }
+
+    .nav-links ul li {
+        margin: 15px 0;
+    }
+}

@@ -1,53 +1,53 @@
-# issues/views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.http import Http404
 from .models import Issue
 from .forms import UserIssueForm, StaffIssueForm
 
-# Create Issue
+User = get_user_model()
+
+# List issues: Staff can see all, regular users can see only their own
+def issue_list(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            issues = Issue.objects.all()  # Staff can see all issues
+            users = User.objects.filter(is_staff=True)  # Get all staff users
+        else:
+            issues = Issue.objects.filter(reporter=request.user)  # Users can see only their own issues
+            users = []  # No need for users if regular user
+        
+        return render(request, 'issues/issue_list.html', {'issues': issues, 'users': users})
+    else:
+        return render(request, 'issues/issue_list.html', {'issues': None, 'users': []})
+
+
+# View details of an issue
+def issue_detail(request, pk):
+    issue = get_object_or_404(Issue, pk=pk)
+    if not request.user.is_staff and issue.reporter != request.user:
+        raise Http404("You do not have permission to view this issue.")
+    return render(request, 'issues/issue_detail.html', {'issue': issue})
+
+# Create a new issue
 @login_required
 def issue_create(request):
-    # Choose form based on user type
     if request.user.is_staff:
         form = StaffIssueForm(request.POST or None)
     else:
         form = UserIssueForm(request.POST or None)
-    
+
+    # Handling the form submission
     if request.method == 'POST' and form.is_valid():
         issue = form.save(commit=False)
         issue.reporter = request.user  # Set the logged-in user as the reporter
         issue.status = 'Open'  # Default status for new issues
         issue.save()
-        return redirect('issue_detail', pk=issue.pk)
+        return redirect('issue_list')  # Redirect to the issue list page after creation
     
     return render(request, 'issues/issue_form.html', {'form': form})
 
-
-# List all issues (staff only) or only the user's issues
-@login_required
-def issue_list(request):
-    if request.user.is_staff:
-        issues = Issue.objects.all()  # Staff can see all issues
-    else:
-        issues = Issue.objects.filter(reporter=request.user)  # Users can see only their own issues
-    
-    return render(request, 'issues/issue_list.html', {'issues': issues})
-
-
-# View details of a specific issue
-def issue_detail(request, pk):
-    issue = get_object_or_404(Issue, pk=pk)
-    
-    # If user is not staff or reporter, deny access
-    if not request.user.is_staff and issue.reporter != request.user:
-        raise Http404("You do not have permission to view this issue.")
-    
-    return render(request, 'issues/issue_detail.html', {'issue': issue})
-
-
-# Edit an issue (staff only, with options to assign, change status)
+# Edit an issue
 @login_required
 def issue_edit(request, pk):
     issue = get_object_or_404(Issue, pk=pk)
@@ -56,7 +56,6 @@ def issue_edit(request, pk):
     if not (request.user.is_staff or issue.reporter == request.user):
         return redirect('issue_detail', pk=issue.pk)
 
-    # Use different form depending on whether the user is staff or regular user
     if request.method == 'POST':
         if request.user.is_staff:
             form = StaffIssueForm(request.POST, instance=issue)
@@ -64,39 +63,36 @@ def issue_edit(request, pk):
             form = UserIssueForm(request.POST, instance=issue)  # Regular users can only change title/description
         if form.is_valid():
             form.save()
-            return redirect('issue_detail', pk=issue.pk)
+            return redirect('issue_list')  # Redirecting to the issue list page after update
     else:
         if request.user.is_staff:
             form = StaffIssueForm(instance=issue)
         else:
             form = UserIssueForm(instance=issue)
 
-    return render(request, 'issues/issue_form.html', {'form': form, 'issue': issue})
+    return render(request, 'issues/issue_edit.html', {'form': form, 'issue': issue})
 
-
-# Delete an issue (staff only)
+# Delete an issue (only staff can delete)
 @login_required
 def issue_delete(request, pk):
     issue = get_object_or_404(Issue, pk=pk)
-
-    # Only staff can delete issues
+    
     if not request.user.is_staff:
         return redirect('issue_detail', pk=issue.pk)
-
-    if request.method == 'POST':  # Confirm deletion
+    
+    if request.method == 'POST':
         issue.delete()
         return redirect('issue_list')
-
+    
     return render(request, 'issues/issue_confirm_delete.html', {'issue': issue})
 
-
-# Filter by category or show all categories
+# Filter issues by category
 @login_required
 def issue_category(request, category=None):
     if category:
-        issues = Issue.objects.filter(category=category)  # Filter by the selected category
+        issues = Issue.objects.filter(category=category)
     else:
-        issues = Issue.objects.all()  # Show all issues if no category selected
-    
-    categories = Issue.CATEGORY_CHOICES  # You can add this list of categories in the model
+        issues = Issue.objects.all()
+
+    categories = Issue.CATEGORY_CHOICES  # Retrieve categories from model
     return render(request, 'issues/issue_category_list.html', {'issues': issues, 'categories': categories})

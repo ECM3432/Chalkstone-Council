@@ -9,7 +9,7 @@ User = get_user_model()
 class UserIssueForm(forms.ModelForm):
     class Meta:
         model = Issue
-        fields = ['title', 'description']  # Only allow title and description for regular users
+        fields = ['title', 'description', 'category']  # Only allow title and description for regular users
 
 # Form for staff users to create, update and manage issues (includes assignee, status, and category)
 class StaffIssueForm(forms.ModelForm):

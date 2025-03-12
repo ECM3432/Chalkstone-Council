@@ -1,0 +1,91 @@
+{% extends 'analytics/base.html' %}
+
+{% load static %}
+
+{% block title %}Filter and Query Issues - Chalkstone Council{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'analytics/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<header class="filter-header">
+    <h1>Filter and Query Issues</h1>
+    <p>Use the filters below to search for issues by status, category, assignee, or title.</p>
+</header>
+
+<section class="filter-form">
+    <form method="GET">
+        <div class="filter-group">
+          <label for="status">Status:</label>
+          <select name="status" id="status">
+              <option value="">-- All --</option>
+              {% for s in allowed_statuses %}
+                  <option value="{{ s }}" {% if s == status_filter %}selected{% endif %}>{{ s }}</option>
+              {% endfor %}
+          </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="category">Category:</label>
+            <select name="category" id="category">
+                <option value="">-- All --</option>
+                {% for category in categories %}
+                    <option value="{{ category }}" {% if category == category_filter %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="assignee">Assignee:</label>
+            <select name="assignee" id="assignee">
+                <option value="">-- All --</option>
+                {% for user in staff_users %}
+                    <option value="{{ user.id }}" {% if user.id|stringformat:"s" == assignee_filter %}selected{% endif %}>{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="search">Title Contains:</label>
+            <input type="text" name="search" id="search" placeholder="Search by title" value="{{ search_query }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+    </form>
+</section>
+
+<section class="filtered-results">
+    <h2>Filtered Issues</h2>
+    {% if issues %}
+        <table class="issues-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Category</th>
+                    <th>Assignee</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for issue in issues %}
+                    <tr>
+                        <td>{{ issue.title }}</td>
+                        <td>{{ issue.status }}</td>
+                        <td>{{ issue.category }}</td>
+                        <td>{{ issue.assignee }}</td>
+                        <td>{{ issue.created_at }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">No issues found matching your criteria.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No issues found.</p>
+    {% endif %}
+</section>
+{% endblock %}

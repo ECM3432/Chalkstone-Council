@@ -1,0 +1,36 @@
+{% extends "analytics/base.html" %}
+
+{% block title %}Issues Charts - Chalkstone Council{% endblock %}
+
+{% block content %}
+  <h2>Visualize Issues with Charts</h2>
+
+  <canvas id="statusChart" width="400" height="200"></canvas>
+
+  <!-- Include Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <script>
+    const labels = {{ labels|safe }};
+    const data = {{ data|safe }};
+    
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '# of Issues',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            }]
+        },
+        options: {
+            scales: { 
+                y: { 
+                    beginAtZero: true 
+                }
+            }
+        }
+    });
+  </script>
+{% endblock %}

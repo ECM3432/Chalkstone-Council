@@ -1,9 +1,7 @@
-<!-- issues/issue_form.html -->
-
 {% extends "issues/base.html" %}
 
 {% block content %}
-  <h2>Create New Issue</h2>
+  <h2>{% if issue %}Edit{% else %}Create{% endif %} Issue</h2>
   <form method="POST">
     {% csrf_token %}
     <div class="form-group">
@@ -18,7 +16,7 @@
       <label for="id_category">Category</label>
       {{ form.category }}
     </div>
-    
+
     {% if user.is_staff %}
       <div class="form-group">
         <label for="id_assignee">Assignee</label>
@@ -30,6 +28,6 @@
       </div>
     {% endif %}
     
-    <button type="submit" class="btn btn-primary create-issue-btn">Create Issue</button>
+    <button type="submit" class="btn btn-primary">{% if issue %}Update{% else %}Create{% endif %} Issue</button>
   </form>
 {% endblock %}

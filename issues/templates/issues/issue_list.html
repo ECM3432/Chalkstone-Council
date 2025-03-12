@@ -3,60 +3,47 @@
 {% block title %}Issues - Chalkstone Council{% endblock %}
 
 {% block content %}
-  <!-- Introductory Section -->
   <section class="issues-intro">
-      <h2>Welcome to the Chalkstone Council Issue Tracker</h2>
-      <p>At Chalkstone Council, we are committed to improving our community. This platform allows residents to report a wide range of issues that may impact the daily lives of our citizens. By reporting issues, we can work together to keep the streets safe, clean, and functioning for all.</p>
-      <p>The types of issues you can report include, but are not limited to:</p>
-      <p>
-          - Potholes on roads and pavements <br>
-          - Broken street lamps <br>
-          - Fly-tipping <br>
-          - Damaged or missing signage <br>
-          - Graffiti <br>
-          - And much more...
-      </p>
-      <p>If you notice any of these or any other issues, please click the button below to create a new issue report.</p>
-      <a href="{% url 'issue_create' %}" class="btn btn-create-issue">Create New Issue</a>
+    <h2>Welcome to the Chalkstone Council Issue Tracker</h2>
+    <p>At Chalkstone Council, we are committed to improving our community. This platform allows residents to report a wide range of issues that may impact the daily lives of our citizens. By reporting issues, we can work together to keep the streets safe, clean, and functioning for all.</p>
+    <a href="{% url 'issue_create' %}" class="btn btn-create-issue">Create New Issue</a>
   </section>
 
-  <!-- Issues Table Section -->
   <section class="issue-list">
-      <h3>Current Issues</h3>
-      <table class="issues-table">
-          <thead>
-              <tr>
-                  <th>Title</th>
-                  <th>Status</th>
-                  <th>Assignee</th>
-                  <th>Created At</th>
-                  <th>Actions</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for issue in issues %}
-                  <tr>
-                      <td>{{ issue.title }}</td>
-                      <td>{{ issue.status }}</td>
-                      <td>{{ issue.assignee }}</td>
-                      <td>{{ issue.created_at }}</td>
-                      <td>
-                          <a href="{% url 'issue_detail' issue.pk %}" class="btn btn-view">View Details</a>
-                          {% if user.is_staff %}
-                              <a href="{% url 'issue_edit' issue.pk %}" class="btn btn-edit">Edit</a>
-                              <a href="{% url 'issue_delete' issue.pk %}" class="btn btn-delete">Delete</a>
-                          {% elif issue.reporter == user %}
-                              <a href="{% url 'issue_edit' issue.pk %}" class="btn btn-edit">Edit</a>
-                          {% endif %}
-                      </td>
-                  </tr>
-              {% empty %}
-                  <tr>
-                      <td colspan="5">No issues have been reported yet.</td>
-                  </tr>
-              {% endfor %}
-          </tbody>
-      </table>
+    <h3>Current Issues</h3>
+    <table class="issues-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Assignee</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for issue in issues %}
+          <tr>
+            <td><a href="{% url 'issue_detail' issue.pk %}">{{ issue.title }}</a></td>
+            <td>{{ issue.status }}</td>
+            <td>{{ issue.assignee }}</td>
+            <td>{{ issue.created_at }}</td>
+            <td>
+              <a href="{% url 'issue_detail' issue.pk %}" class="btn btn-view">View</a>
+              {% if user.is_staff %}
+                <a href="{% url 'issue_edit' issue.pk %}" class="btn btn-edit">Edit</a>
+                <a href="{% url 'issue_delete' issue.pk %}" class="btn btn-delete">Delete</a>
+              {% elif issue.reporter == user %}
+                <a href="{% url 'issue_edit' issue.pk %}" class="btn btn-edit">Edit</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">No issues have been reported yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </section>
-
 {% endblock %}

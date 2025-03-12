@@ -4,18 +4,20 @@ from django.contrib.auth import get_user_model
 from django.http import Http404
 from .models import Issue
 from .forms import UserIssueForm, StaffIssueForm
+from comments.forms import CommentForm
 
 User = get_user_model()
 
 # List issues: Staff can see all, regular users can see only their own
 def issue_list(request):
     if request.user.is_authenticated:
+        # Exclude closed issues for all users
+        issues = Issue.objects.exclude(status='Closed')  # All users (staff or regular) see all issues except closed ones
+        
         if request.user.is_staff:
-            issues = Issue.objects.all()  # Staff can see all issues
-            users = User.objects.filter(is_staff=True)  # Get all staff users
+            users = User.objects.filter(is_staff=True)  # Get all staff users for assignment if needed
         else:
-            issues = Issue.objects.filter(reporter=request.user)  # Users can see only their own issues
-            users = []  # No need for users if regular user
+            users = []  # Regular users won't see staff users in the form
         
         return render(request, 'issues/issue_list.html', {'issues': issues, 'users': users})
     else:
@@ -25,26 +27,35 @@ def issue_list(request):
 # View details of an issue
 def issue_detail(request, pk):
     issue = get_object_or_404(Issue, pk=pk)
-    if not request.user.is_staff and issue.reporter != request.user:
-        raise Http404("You do not have permission to view this issue.")
-    return render(request, 'issues/issue_detail.html', {'issue': issue})
+    comment_form = CommentForm()
+
+    return render(request, 'issues/issue_detail.html', {
+        'issue': issue,
+        'comment_form': comment_form,
+    })
 
 # Create a new issue
 @login_required
 def issue_create(request):
-    if request.user.is_staff:
-        form = StaffIssueForm(request.POST or None)
-    else:
-        form = UserIssueForm(request.POST or None)
-
-    # Handling the form submission
-    if request.method == 'POST' and form.is_valid():
-        issue = form.save(commit=False)
-        issue.reporter = request.user  # Set the logged-in user as the reporter
-        issue.status = 'Open'  # Default status for new issues
-        issue.save()
-        return redirect('issue_list')  # Redirect to the issue list page after creation
+    if request.method == 'POST':
+        if request.user.is_staff:
+            form = StaffIssueForm(request.POST)
+        else:
+            form = UserIssueForm(request.POST)
+        
+        if form.is_valid():
+            issue = form.save(commit=False)
+            issue.reporter = request.user  # Set the logged-in user as the reporter
+            issue.status = 'Open'  # Default status for new issues
+            issue.save()
+            return redirect('issue_list')  # After creating an issue, redirect to issue list
     
+    else:
+        if request.user.is_staff:
+            form = StaffIssueForm()
+        else:
+            form = UserIssueForm()
+
     return render(request, 'issues/issue_form.html', {'form': form})
 
 # Edit an issue

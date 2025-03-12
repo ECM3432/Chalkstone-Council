@@ -5,7 +5,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('comments/', views.home, name='comments'),  # homepage view
+    path('add/<int:issue_id>/', views.add_comment, name='add_comment')  # add comment view
 ]
 
 if settings.DEBUG:

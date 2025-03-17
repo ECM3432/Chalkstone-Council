@@ -208,3 +208,43 @@ body {
 .issues-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
+/* General styling for the analytics charts page */
+/* Header styling specific to analytics pages */
+.dashboard-header {
+    text-align: center;
+    padding: 30px 20px;
+    color: #2d3e50;
+    background: none;
+}
+
+/* Grid container for charts */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* Each chart section */
+.chart-section {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-section h2 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+/* Ensure canvases scale responsively */
+.chart-section canvas {
+    max-width: 100%;
+    height: auto;
+}

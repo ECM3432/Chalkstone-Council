@@ -151,7 +151,7 @@ main {
 
 /* Info Section */
 .info-container {
-    display: block; /* Change to block to stack sections */
+    display:flex; /* Change to block to stack sections */
     margin: 40px 0;
 }
 

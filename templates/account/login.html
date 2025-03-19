@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+
+{% load static i18n socialaccount %}
+
+
+{% block title %}Login - Chalkstone Council{% endblock %}
+
+{% block content %}
+<div class="login-outer">
+  <div class="login-container">
+    <!-- Left Illustration Section -->
+
+    <!-- Right Form Section -->
+    <div class="login-form">
+      <h2>Login</h2>
+      <form action="{% url 'account_login' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <!-- Regular Login Button -->
+        <button type="submit" class="login-button">Login</button>
+
+        <!-- Google Login Button -->
+        <a href="{% provider_login_url 'google' %}" class="google-button">
+          Sign in with Google
+        </a>
+      </form>
+
+ 
+      <div class="create-account">
+        <p>Create your Account <a href="{% url 'account_signup' %}">Here</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

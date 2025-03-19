@@ -24,7 +24,6 @@ urlpatterns = [
     path('issues/', include('issues.urls')),       # issues app
     path('comments/', include('comments.urls')),   # comments app
     path('analytics/', include('analytics.urls')), # analytics app
-    path('users/', include('users.urls')),         # users app (if needed for profile)
     path('admin/', admin.site.urls),               # Django admin
     path('accounts/', include('allauth.urls'))     # Allauth for social logins like Google OAuth
 ]

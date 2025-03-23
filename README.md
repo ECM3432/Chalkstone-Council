@@ -37,9 +37,9 @@ The primary audience includes:
 
 ## Development Method
 The project followed an Agile methodology with iterative planning and development. The MoSCoW method was used to prioritize features:
-- **Must Have**: Issue logging, user authentication, analytics, role-based access.
+- **Must Have**: Issue logging, user authentication, analytics, role-based access, filtering.
 - **Should Have**: OAuth login, commenting system.
-- **Could Have**: Advanced filters and chart-based analytics.
+- **Could Have**: Ability to upload images and geo-location to issues.
 - **Won’t Have**: Notifications or mobile app version.
 
 ## Design

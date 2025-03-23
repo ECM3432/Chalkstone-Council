@@ -1,6 +1,6 @@
 {% extends 'analytics/base.html' %}
-
 {% load static %}
+
 
 {% block title %}Visualize Issues - Chalkstone Council{% endblock %}
 
@@ -10,147 +10,119 @@
 
 {% block content %}
 <h1>Issue Analytics</h1>
-
 <div class="charts-grid">
-    <!-- Grid 1: Pie Chart: Issues by Status -->
-    <section class="chart-section">
-        <h2>Issues by Status</h2>
-        <canvas id="pieChart"></canvas>
-    </section>
-    
-    <!-- Grid 2: Bar Chart: Issues by Category -->
-    <section class="chart-section">
-        <h2>Issues by Category</h2>
-        <canvas id="barChart"></canvas>
-    </section>
-    
-    <!-- Grid 3: Line Chart: Issues Over Time -->
-    <section class="chart-section">
+  <!-- Grid 1: Pie Chart - Issues by Status -->
+  <section class="dashboard-section" id="grid1">
+    <h2>Issues by Status</h2>
+    <canvas id="pieChart"></canvas>
+  </section>
+  
+  <!-- Grid 2: Bar Chart - Issues by Category -->
+  <section class="dashboard-section" id="grid3">
+    <h2>Issues by Category</h2>
+    <canvas id="barChart"></canvas>
+  </section>
+
+    <!-- Grid 3: Line Chart - Issues Over Time -->
+    <section class="dashboard-section" id="grid2">
         <h2>Issues Over Time</h2>
         <canvas id="lineChart"></canvas>
-    </section>
-    
-    <!-- Grid 4: Stacked Bar Chart: Issues by Category & Status -->
-    <section class="chart-section">
-        <h2>Issues by Category & Status</h2>
-        <canvas id="stackedBarChart"></canvas>
-    </section>
+      </section>
+
+  <!-- Grid 4: Bar Chart - Staff Workload -->
+  <section class="dashboard-section" id="grid4">
+    <h2>Staff Workload</h2>
+    <canvas id="workloadChart"></canvas>
+  </section>
 </div>
 
 <!-- Include Chart.js from CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script>
-    // Pie Chart: Issues by Status
-    const pieCtx = document.getElementById('pieChart').getContext('2d');
-    const pieChart = new Chart(pieCtx, {
-        type: 'pie',
-        data: {
-            labels: {{ pie_labels|safe }},
-            datasets: [{
-                data: {{ pie_data|safe }},
-                backgroundColor: ['#3498db', '#f1c40f', '#e74c3c']
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: false,
-                }
-            }
-        }
-    });
+  // Pie Chart: Issues by Status
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: {{ pie_labels|safe }},
+      datasets: [{
+        data: {{ pie_data|safe }},
+        backgroundColor: ['#3498db', '#f1c40f', '#e74c3c'] // Adjust or add more colours if needed
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { title: { display: false } }
+    }
+  });
 
-    // Bar Chart: Issues by Category
-    const barCtx = document.getElementById('barChart').getContext('2d');
-    const barChart = new Chart(barCtx, {
-        type: 'bar',
-        data: {
-            labels: {{ bar_labels|safe }},
-            datasets: [{
-                label: 'Number of Issues',
-                data: {{ bar_data|safe }},
-                backgroundColor: 'rgba(52, 152, 219, 0.6)',
-                borderColor: 'rgba(52, 152, 219, 1)',
-                borderWidth: 1
-            }]
+  // Line Chart: Issues Over Time (Created vs. Closed)
+  const lineCtx = document.getElementById('lineChart').getContext('2d');
+  new Chart(lineCtx, {
+    type: 'line',
+    data: {
+      labels: {{ line_labels|safe }},
+      datasets: [
+        {
+          label: 'Issues Created',
+          data: {{ line_created_data|safe }},
+          fill: false,
+          borderColor: '#2ecc71',
+          tension: 0.1
         },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
-            },
-            plugins: {
-                title: {
-                    display: false,
-                }
-            }
+        {
+          label: 'Issues Closed',
+          data: {{ line_closed_data|safe }},
+          fill: false,
+          borderColor: '#e74c3c',
+          tension: 0.1
         }
-    });
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true } }
+    }
+  });
 
-    // Line Chart: Issues Over Time
-    const lineCtx = document.getElementById('lineChart').getContext('2d');
-    const lineChart = new Chart(lineCtx, {
-        type: 'line',
-        data: {
-            labels: {{ line_labels|safe }},
-            datasets: [{
-                label: 'Issues Created',
-                data: {{ line_data|safe }},
-                fill: false,
-                borderColor: '#2ecc71',
-                tension: 0.1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
-            },
-            plugins: {
-                title: {
-                    display: false,
-                }
-            }
-        }
-    });
+  // Bar Chart: Issues by Category
+  const barCtx = document.getElementById('barChart').getContext('2d');
+  new Chart(barCtx, {
+    type: 'bar',
+    data: {
+      labels: {{ bar_labels|safe }},
+      datasets: [{
+        label: 'Issue Count',
+        data: {{ bar_data|safe }},
+        backgroundColor: 'rgba(52, 152, 219, 0.6)',
+        borderColor: 'rgba(52, 152, 219, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true } }
+    }
+  });
 
-    // Stacked Bar Chart: Issues by Category & Status
-    const stackedCtx = document.getElementById('stackedBarChart').getContext('2d');
-    const stackedChart = new Chart(stackedCtx, {
-        type: 'bar',
-        data: {
-            labels: {{ stacked_labels|safe }},
-            datasets: [
-                {
-                    label: 'Open',
-                    data: {{ stacked_open|safe }},
-                    backgroundColor: '#3498db'
-                },
-                {
-                    label: 'In Progress',
-                    data: {{ stacked_in_progress|safe }},
-                    backgroundColor: '#f1c40f'
-                },
-                {
-                    label: 'Closed',
-                    data: {{ stacked_closed|safe }},
-                    backgroundColor: '#e74c3c'
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: { stacked: true },
-                y: { stacked: true, beginAtZero: true }
-            },
-            plugins: {
-                title: {
-                    display: false,
-                }
-            }
-        }
-    });
+  // Bar Chart: Staff Workload
+  const workloadCtx = document.getElementById('workloadChart').getContext('2d');
+  new Chart(workloadCtx, {
+    type: 'bar',
+    data: {
+      labels: {{ workload_labels|safe }},
+      datasets: [{
+        label: 'Assigned Issues',
+        data: {{ workload_data|safe }},
+        backgroundColor: 'rgba(155, 89, 182, 0.6)',
+        borderColor: 'rgba(155, 89, 182, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true } }
+    }
+  });
 </script>
 {% endblock %}

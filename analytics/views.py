@@ -118,7 +118,6 @@ def analytics_charts(request):
     bar_labels = [entry['category'] for entry in bar_qs]
     bar_data = [entry['count'] for entry in bar_qs]
 
-
     # 3. Line Chart Data: Issues Over Time
     created_qs = Issue.objects.annotate(day=TruncDay('created_at')).values('day').annotate(count=Count('id')).order_by('day')
     closed_qs = Issue.objects.filter(status='Closed').annotate(day=TruncDay('updated_at')).values('day').annotate(count=Count('id')).order_by('day')

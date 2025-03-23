@@ -108,42 +108,41 @@ def analytics_issues(request):
     return render(request, 'analytics/analytics_issues.html', {'closed_issues_data': closed_issues_data})
 
 def analytics_charts(request):
-    # Pie Chart: Issues by Status
+    # 1. Pie Chart Data: Issues by Status
     pie_qs = Issue.objects.values('status').annotate(count=Count('id'))
     pie_labels = [entry['status'] for entry in pie_qs]
     pie_data = [entry['count'] for entry in pie_qs]
-    
-    # Bar Chart: Issues by Category
+
+    # 2. Bar Chart Data: Issues by Category
     bar_qs = Issue.objects.values('category').annotate(count=Count('id')).order_by('category')
     bar_labels = [entry['category'] for entry in bar_qs]
     bar_data = [entry['count'] for entry in bar_qs]
-    
-    # Line Chart: Issues Over Time (by day)
-    time_qs = Issue.objects.annotate(day=TruncDay('created_at')).values('day').annotate(count=Count('id')).order_by('day')
-    line_labels = [entry['day'].strftime('%Y-%m-%d') for entry in time_qs]
-    line_data = [entry['count'] for entry in time_qs]
-    
-    # Stacked Bar Chart: Issues by Category and State
-    categories = list(Issue.objects.values_list('category', flat=True).distinct())
-    stacked_labels = sorted(categories)
-    stacked_open = []
-    stacked_in_progress = []
-    stacked_closed = []
-    for cat in stacked_labels:
-        stacked_open.append(Issue.objects.filter(category=cat, status='Open').count())
-        stacked_in_progress.append(Issue.objects.filter(category=cat, status='In Progress').count())
-        stacked_closed.append(Issue.objects.filter(category=cat, status='Closed').count())
-    
+
+
+    # 3. Line Chart Data: Issues Over Time
+    created_qs = Issue.objects.annotate(day=TruncDay('created_at')).values('day').annotate(count=Count('id')).order_by('day')
+    closed_qs = Issue.objects.filter(status='Closed').annotate(day=TruncDay('updated_at')).values('day').annotate(count=Count('id')).order_by('day')
+    created_dict = {entry['day'].strftime('%Y-%m-%d'): entry['count'] for entry in created_qs}
+    closed_dict = {entry['day'].strftime('%Y-%m-%d'): entry['count'] for entry in closed_qs}
+    all_days = sorted(set(list(created_dict.keys()) + list(closed_dict.keys())))
+    line_labels = all_days
+    line_created_data = [created_dict.get(day, 0) for day in all_days]
+    line_closed_data = [closed_dict.get(day, 0) for day in all_days]
+
+    # 4. Staff Workload Data
+    workload_qs = Issue.objects.filter(assignee__isnull=False).values('assignee__username').annotate(count=Count('id')).order_by('assignee__username')
+    workload_labels = [entry['assignee__username'] for entry in workload_qs]
+    workload_data = [entry['count'] for entry in workload_qs]
+
     context = {
         'pie_labels': pie_labels,
         'pie_data': pie_data,
         'bar_labels': bar_labels,
         'bar_data': bar_data,
         'line_labels': line_labels,
-        'line_data': line_data,
-        'stacked_labels': stacked_labels,
-        'stacked_open': stacked_open,
-        'stacked_in_progress': stacked_in_progress,
-        'stacked_closed': stacked_closed,
+        'line_created_data': line_created_data,
+        'line_closed_data': line_closed_data,
+        'workload_labels': workload_labels,
+        'workload_data': workload_data,
     }
     return render(request, 'analytics/analytics_charts.html', context)

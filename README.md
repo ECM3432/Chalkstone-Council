@@ -184,6 +184,7 @@ python manage.py test {appname}
 ### Admin Panel
 
 Access the Django admin dashboard at: 📍 http://127.0.0.1:8000/admin/
+
 Use the superuser credentials you created earlier.
 
 # Contributing

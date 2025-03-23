@@ -1,0 +1,25 @@
+{% extends "issues/base.html" %}
+
+{% block content %}
+  <div class="delete-confirmation-container">
+    <h2>Are you sure you want to delete the issue: "{{ issue.title }}"?</h2>
+    
+    <section class="issue-details">
+      <h3>Issue Details:</h3>
+      <p><strong>Description:</strong> {{ issue.description }}</p>
+      <p><strong>Category:</strong> {{ issue.category }}</p>
+      <p><strong>Status:</strong> {{ issue.status }}</p>
+      <p><strong>Assignee:</strong> {{ issue.assignee }}</p>
+      <p><strong>Created At:</strong> {{ issue.created_at }}</p>
+    </section>
+
+    <div class="confirmation-actions">
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, delete</button>
+      </form>
+      
+      <a href="{% url 'issue_detail' issue.pk %}" class="btn btn-cancel">Cancel</a>
+    </div>
+  </div>
+{% endblock %}

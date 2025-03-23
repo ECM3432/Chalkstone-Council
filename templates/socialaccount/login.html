@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}
+  {% trans "Sign In with Google" %}
+{% endblock head_title %}
+
+{% block content %}
+<section class="google-login-section">
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  
+  <h2>{% trans "Sign In Via Google" %}</h2>
+  <p>{% trans "You are about to sign in using a third-party account from Google." %}</p>
+
+  {# The form or link that initiates Google login #}
+  <form method="POST" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="google-submit-btn">
+      {% trans "Continue" %}
+    </button>
+  </form>
+  
+  <p class="small-note">
+    <a href="{% url 'account_login' %}">
+      {% trans "Go Back" %}
+    </a>
+  </p>
+</section>
+{% endblock content %}

@@ -1,7 +1,7 @@
 # Chalkstone Issue Tracking System
 
 ## Purpose
-The Chalkstone Issue Tracking System was developed to support Chalkstone Council in managing and addressing public and staff-reported infrastructure issues efficiently. The platform allows users to report, track, and analyze problems such as potholes, graffiti, fly-tipping, and broken streetlights.
+The Chalkstone Issue Tracking System was developed to support Chalkstone Council in managing and addressing public and staff-reported infrastructure issues efficiently. The platform allows users to report, track, and analyse problems such as potholes, graffiti, fly-tipping, and broken streetlights.
 
 ## Aims
 - Enable public users and staff to log issues quickly and accurately.
@@ -11,13 +11,13 @@ The Chalkstone Issue Tracking System was developed to support Chalkstone Council
 
 ## Users' Goals:
 - Public users can create accounts, log in, and report issues.
-- Staff members can manage, categorize, assign, and analyze issues.
+- Staff members can manage, categorise, assign, and analyse issues.
 - Admins can manage user permissions and monitor overall platform activity.
 
 ## Site Goals:
 - Provide a clear and accessible interface for users of varying technical skills.
 - Ensure security and data integrity through Django’s built-in authentication.
-- Offer real-time data analysis and visualizations to support council operations.
+- Offer real-time data analysis and visualisations to support council operations.
 
 ## Target Audience
 The primary audience includes:
@@ -28,7 +28,7 @@ The primary audience includes:
 ## Features to be included
 - Secure registration and login (including Google OAuth).
 - Ability to report, edit, and view issues.
-- Staff-only tools for assigning issues, updating status, and categorizing.
+- Staff-only tools for assigning issues, updating status, and categorising.
 - Commenting system for user and staff communication.
 - Analytics dashboard for reporting trends, resolution times, and staff workload.
 - Admin controls for managing user roles and CRUD access.
@@ -36,7 +36,7 @@ The primary audience includes:
 # User Experience (UX)
 
 ## Development Method
-The project followed an Agile methodology with iterative planning and development. The MoSCoW method was used to prioritize features:
+The project followed an Agile methodology with iterative planning and development. The MoSCoW method was used to prioritise features:
 - **Must Have**: Issue logging, user authentication, analytics, role-based access, filtering.
 - **Should Have**: OAuth login, commenting system.
 - **Could Have**: Ability to upload images and geo-location to issues.
@@ -56,7 +56,7 @@ The datasets for the project are:
 - Public user registration/login with optional Google OAuth.
 - Issue creation and edit functionality.
 - Commenting system (user and staff).
-- Staff-only issue assignment, categorization, and status updates.
+- Staff-only issue assignment, categorisation, and status updates.
 - Issue search and filtering.
 - Analytics dashboard with interactive charts (Chart.js).
 
